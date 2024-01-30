@@ -1,30 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Manager<GameManager>
 {
-    private static GameManager instance;
-    public static GameManager Instance => instance;
-
-    #region Wave Variables
+    #region User's Character Variables
     /// <summary>
-    /// 첫 웨이브는 1부터 시작하도록 구현
+    /// 게임이 시작되는 등 유저의 캐릭터가 생성될 때 각 캐릭터의 정보를 매니저에 등록하여야 함
     /// </summary>
-    private int totalWaveCount = 0;
-    public int _StageCount => (totalWaveCount - 1) / 5 + 1;
-    public int _WaveCount => (totalWaveCount - 1) % 5 + 1;
-
-    private ActionTemplates<int, int> actionOnChangeWave = new ActionTemplates<int, int>();
-    public ActionTemplates<int, int> _ActionOnChangeWave => actionOnChangeWave;
+    private HashSet<Character> set_ActivatedCharacters = new HashSet<Character>();
     #endregion
 
     #region Game Mode Variables
     private GameModes gameModeData = new GameModes();
 
-    private ActionTemplates<GameModes.Mode, GameModes.Mode> actionOnChangeMode = new ActionTemplates<GameModes.Mode, GameModes.Mode>();
-    public ActionTemplates<GameModes.Mode, GameModes.Mode> _ActionOnChangeMode => actionOnChangeMode;
+    private ActionTemplate<GameModes.Mode, GameModes.Mode> actionOnChangeMode = new ActionTemplate<GameModes.Mode, GameModes.Mode>();
+    public ActionTemplate<GameModes.Mode, GameModes.Mode> _ActionOnChangeMode => actionOnChangeMode;
 
     public GameModes.Mode _CurrentGameMode
     {
@@ -38,39 +31,17 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    private void Awake()
+    public Character[] GetActivatedCharacterSet() => (new List<Character>(set_ActivatedCharacters)).ToArray();
+    public bool AddActivatedCharacterToSet(Character character)
     {
-        if (instance != null) Destroy(gameObject);
-        else { instance = this; DontDestroyOnLoad(gameObject); }
+        if (set_ActivatedCharacters.Contains(character)) return false;
+        set_ActivatedCharacters.Add(character);
+        return true;
     }
-
-    void Start()
+    public bool RemoveCharacterOfSet(Character character)
     {
-        StartNextWave();
-    }
-
-    /// <summary>
-    /// 다음 웨이브 시작
-    /// </summary>
-    void StartNextWave()
-    {
-        totalWaveCount++;
-        SpawnEnemies(5, _WaveCount == 5);
-        _ActionOnChangeWave.Action(_StageCount, _WaveCount);
-    }
-
-    void SpawnEnemies(int spawnCount, bool spawnBoss)
-    {
-        // Enemy spawning logic
-    }
-
-    void HandleWaveClear()
-    {
-        // Reward logic
-    }
-
-    void HandleBossWave()
-    {
-        // Boss wave logic
+        if (!set_ActivatedCharacters.Contains(character)) return false;
+        set_ActivatedCharacters.Remove(character);
+        return true;
     }
 }

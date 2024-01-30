@@ -1,10 +1,39 @@
 using System;
 
-public class ActionTemplates<T>
+public class ActionTemplate
+{
+    private Action action = null;
+
+    public void SetAction(Action action)
+    {
+        this.action = action;
+    }
+    public void RegistAction(Action action)
+    {
+        this.action -= action;
+        this.action += action;
+    }
+    public void RemoveAction(Action action)
+    {
+        this.action -= action;
+    }
+
+    public void Action()
+    {
+        if (action == null) return;
+        action();
+    }
+}
+
+public class ActionTemplate<T>
 {
     private Action<T> action = null;
 
-    public void AddAction(Action<T> action)
+    public void SetAction(Action<T> action)
+    {
+        this.action = action;
+    }
+    public void RegistAction(Action<T> action)
     {
         this.action -= action;
         this.action += action;
@@ -21,11 +50,15 @@ public class ActionTemplates<T>
     }
 }
 
-public class ActionTemplates<T1, T2>
+public class ActionTemplate<T1, T2>
 {
     private Action<T1, T2> action = null;
-    
-    public void AddAction(Action<T1, T2> action)
+
+    public void SetAction(Action<T1, T2> action)
+    {
+        this.action = action;
+    }
+    public void RegistAction(Action<T1, T2> action)
     {
         this.action -= action;
         this.action += action;
