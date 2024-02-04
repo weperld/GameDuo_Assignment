@@ -20,3 +20,14 @@
 - [Free Asset - 2D Handcrafted Art](https://assetstore.unity.com/packages/2d/environments/free-asset-2d-handcrafted-art-117049)
 - [Fonts - MapleStory](https://maplestory.nexon.com/Media/Font)
 - [Modern RPG - Free icons pack](https://assetstore.unity.com/packages/2d/gui/icons/modern-rpg-free-icons-pack-264706)
+<br/><br/>
+
+## 구현 목록
+- 도전/일반 모드 및 모드 전환: O
+- 클리어 보상: X
+- 보스 웨이브: X
+- 캐릭터 구현: O
+- 액티브 스킬: O
+- 패시브 스킬: O
+- 무기 및 머지 시스템: X
+- 능력 시스템: X
