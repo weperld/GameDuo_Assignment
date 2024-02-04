@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class GameModes
 {
     public enum Mode
@@ -12,8 +7,13 @@ public class GameModes
     }
 
     private Mode currentMode = Mode.CHALLENGE;
-
     public Mode _CurrentMode => currentMode;
+
+    public GameModes(Mode startMode = Mode.CHALLENGE)
+    {
+        currentMode = startMode;
+    }
+
     public void ChangeGameMode(Mode mode)
     {
         currentMode = mode;

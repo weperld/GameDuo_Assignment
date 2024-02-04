@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Manager<T> : MonoBehaviour where T : MonoBehaviour
@@ -11,7 +9,7 @@ public class Manager<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            if (IsDetroying) return null;
+            if (IsDestroying) return null;
 
             lock (_lock)
             {
@@ -39,8 +37,11 @@ public class Manager<T> : MonoBehaviour where T : MonoBehaviour
                     {
                         GameObject managerObj = new GameObject($"<{typeof(T)}>");
                         instance = managerObj.AddComponent<T>();
-                        DontDestroyOnLoad(managerObj);
                     }
+
+                    instance.transform.position = Vector3.zero;
+                    instance.transform.rotation = Quaternion.identity;
+                    DontDestroyOnLoad(instance);
                 }
 
                 return instance;
@@ -48,20 +49,20 @@ public class Manager<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    public static bool IsDetroying { get; private set; } = false;
+    public static bool IsDestroying { get; private set; } = false;
 
     protected virtual void Awake()
     {
-        IsDetroying = false;
+        IsDestroying = false;
     }
 
     protected virtual void OnDestroy()
     {
-        IsDetroying = true;
+        IsDestroying = true;
     }
 
     protected virtual void OnApplicationQuit()
     {
-        IsDetroying = true;
+        IsDestroying = true;
     }
 }

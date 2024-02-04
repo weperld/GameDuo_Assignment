@@ -2,16 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class Monster : Character
 {
-    // Start is called before the first frame update
-    void Start()
+    private AttackInformation basicAttackInfo;
+
+    public override void AttackOnHitFrameOfAnimation()
+    {
+        basicAttackInfo.target.Damage(basicAttackInfo);
+    }
+
+    public override void BeNoticedDeathOfTarget(Character targetCharacter)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void ActionOnBasicAttack(AttackInformation atkInfo)
+    {
+        basicAttackInfo = atkInfo;
+        basicAttackInfo.SetDmgPosTransform(basicAttackInfo.target.FindClosestDmgPosition(transform.position));
+    }
+
+    protected override void ActionOnDamage(AttackInformation attackInfo)
+    {
+        
+    }
+
+    protected override void ActionOnDeath(AttackInformation attackInfo)
+    {
+        
+    }
+
+    protected override void ActionOnHit(AttackInformation attackInfo)
     {
         
     }

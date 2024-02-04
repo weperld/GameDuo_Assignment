@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 66fd247e1895ddd47b85d8e9b99094a0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - arrowPrefab: {fileID: 2106456400623116952, guid: aa4d208c873846d4a9afbd0e56da0035, type: 3}
+  - monsterPrefab: {instanceID: 0}
+  - bossMonsterPrefab: {instanceID: 0}
+  - archer01Prefab: {fileID: 8896578027134627975, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
+  - archer02Prefab: {fileID: 1386382607221917398, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

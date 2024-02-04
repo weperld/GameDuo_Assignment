@@ -1,55 +1,63 @@
 using System;
 using UnityEngine;
 using Enums;
+using UnityEditor;
 
 public class Archer : Character
 {
+    #region Inspector
+    [Header("Archer")]
+    [SerializeField] private Transform tf_FireArrowPos;
+    #endregion
+
     #region Variables
     public override float _Power
     {
         get
         {
-            // 기본 공격력 대신 제작된 무기의 공격력이 쓰이도록 기본 공격력 값을 제거
-            var ret = base._Power - power;
-            // 무기 클래스 작성 완료시 여기에 무기 공격력 합산 코드 작성
+            var ret = base._Power;
+            // 무기 클래스 작성 완료시
+            // 기본 공격력 대신 제작된 무기의 공격력이 쓰이도록 기본 공격력 값을 제거하고
+            // 무기 공격력 합산 코드 작성
 
             return ret;
         }
     }
 
     public override float _AttackSpeed => base._AttackSpeed;
+
+    private AttackInformation basicAtkInfo;
     #endregion
 
     #region Skills
     protected ActiveSkill activeSkill = null;
     protected virtual ActiveSkill _ActiveSkill { get { if (activeSkill == null) activeSkill = new ActiveSkill(this); return activeSkill; } }
     protected PassiveSkill passiveSkill = null;
-    protected virtual PassiveSkill _PassiveSkill { get { if (passiveSkill == null) passiveSkill = new PassiveSkill(this); return passiveSkill; } }
+    protected virtual PassiveSkill _PassiveSkill { get { if (passiveSkill == null) passiveSkill = new PassiveSkill(this, 0f, PassiveActiveCondition.NONE); return passiveSkill; } }
     #endregion
 
     #region Actions
-    private ActionTemplate<Character> actionOnAttack = new ActionTemplate<Character>();
+    private ActionTemplate<AttackInformation> actionOnAttack = new ActionTemplate<AttackInformation>();
     private ActionTemplate<Character[]> actionOnSkill = new ActionTemplate<Character[]>();
-    private ActionTemplate<float, Character> actionOnHit = new ActionTemplate<float, Character>();
-    private ActionTemplate<float, Character> actionOnDamage = new ActionTemplate<float, Character>();
-    private Action actionOnDeath;
+    private ActionTemplate<AttackInformation> actionOnHitAll = new ActionTemplate<AttackInformation>();
+    private ActionTemplate<AttackInformation> actionOnHitBasicAtk = new ActionTemplate<AttackInformation>();
+    private ActionTemplate<AttackInformation> actionOnHitSkill = new ActionTemplate<AttackInformation>();
+    private ActionTemplate<AttackInformation> actionOnDamage = new ActionTemplate<AttackInformation>();
+    private ActionTemplate<AttackInformation> actionOnDeath = new ActionTemplate<AttackInformation>();
     private ActionTemplate<Character> actionOnKill = new ActionTemplate<Character>();
     #endregion
 
     private void Awake()
     {
-        Debug.Log(_ActiveSkill.GetType());
-        Debug.Log(_PassiveSkill.GetType());
-
         // 패시브 발동 조건에 따라
         switch (_PassiveSkill._ActiveCond)
         {
             case PassiveActiveCondition.BASIC_ATK:
-                actionOnAttack.SetAction(target =>
+                actionOnAttack.SetAction(atkInfo =>
                 {
                     var targets = _PassiveSkill._TargetType switch
                     {
-                        SkillTargetType.TARGET => new Character[] { target },
+                        SkillTargetType.TARGET => new Character[] { atkInfo.target },
                         _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this)
                     };
                     SetTargetsAndApplyEffectOfPassive(targets);
@@ -63,20 +71,44 @@ public class Archer : Character
                     SetTargetsAndApplyEffectOfPassive(targets);
                 });
                 break;
-            case PassiveActiveCondition.HIT:
-                actionOnHit.SetAction((dmg, target) =>
+            case PassiveActiveCondition.HIT_ALL:
+                actionOnHitAll.SetAction(atkInfo =>
                 {
                     var targets = _PassiveSkill._TargetType switch
                     {
-                        SkillTargetType.TARGET => new Character[] { target },
+                        SkillTargetType.TARGET => new Character[] { atkInfo.target },
                         _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this),
                     };
-                    _PassiveSkill.SetCustomCoefficients(dmg);
+                    _PassiveSkill.SetCustomCoefficients(atkInfo);
+                    SetTargetsAndApplyEffectOfPassive(targets);
+                });
+                break;
+            case PassiveActiveCondition.HIT_BASIC_ATK:
+                actionOnHitBasicAtk.SetAction(atkInfo =>
+                {
+                    var targets = _PassiveSkill._TargetType switch
+                    {
+                        SkillTargetType.TARGET => new Character[] { atkInfo.target },
+                        _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this),
+                    };
+                    _PassiveSkill.SetCustomCoefficients(atkInfo);
+                    SetTargetsAndApplyEffectOfPassive(targets);
+                });
+                break;
+            case PassiveActiveCondition.HIT_SKILL:
+                actionOnHitSkill.SetAction(atkInfo =>
+                {
+                    var targets = _PassiveSkill._TargetType switch
+                    {
+                        SkillTargetType.TARGET => new Character[] { atkInfo.target },
+                        _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this),
+                    };
+                    _PassiveSkill.SetCustomCoefficients(atkInfo);
                     SetTargetsAndApplyEffectOfPassive(targets);
                 });
                 break;
             case PassiveActiveCondition.DEATH:
-                actionOnDeath = () => SetTargetsAndApplyEffectOfPassive(Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this));
+                actionOnDeath.SetAction(atkInfo => SetTargetsAndApplyEffectOfPassive(Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this)));
                 break;
             case PassiveActiveCondition.KILL:
                 actionOnKill.SetAction(target =>
@@ -90,19 +122,19 @@ public class Archer : Character
                 });
                 break;
             case PassiveActiveCondition.DAMAGE:
-                actionOnDamage.SetAction((dmg, attacker) =>
+                actionOnDamage.SetAction(atkInfo =>
                 {
                     var targets = _PassiveSkill._TargetType switch
                     {
-                        SkillTargetType.TARGET => new Character[] { attacker },
+                        SkillTargetType.TARGET => new Character[] { atkInfo.attacker },
                         _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this),
                     };
-                    _PassiveSkill.SetCustomCoefficients(dmg);
+                    _PassiveSkill.SetCustomCoefficients(atkInfo);
                     SetTargetsAndApplyEffectOfPassive(targets);
                 });
                 break;
             case PassiveActiveCondition.CLEAR_WAVE:
-                WaveManager.Instance._ActionOnClearWave.RegistAction(ActionOnClearWave);
+                if (!WaveManager.IsDestroying) WaveManager.Instance._ActionOnClearWave.RegistAction(ActionOnClearWave);
                 break;
         }
     }
@@ -120,29 +152,45 @@ public class Archer : Character
         actionOnSkill.Action(skillTargets);
     }
 
-    protected override void ActionOnAttack(Character targetCharacter)
+    protected override void ActionOnBasicAttack(AttackInformation attackInfo)
     {
-        actionOnAttack.Action(targetCharacter);
+        basicAtkInfo = attackInfo;
+        actionOnAttack.Action(attackInfo);
     }
 
-    protected override void ActionOnHit(float dmg, Character damagedCharacter)
+    protected override void ActionOnHit(AttackInformation attackInfo)
     {
-        actionOnHit.Action(dmg, damagedCharacter);
+        switch (attackInfo.attackType)
+        {
+            case AttackType.BASIC: actionOnHitBasicAtk.Action(attackInfo); break;
+            case AttackType.SKILL: actionOnHitSkill.Action(attackInfo); break;
+        }
+        actionOnHitAll.Action(attackInfo);
     }
 
-    protected override void ActionOnDamage(float dmg, Character attackCharacter)
+    protected override void ActionOnDamage(AttackInformation attackInfo)
     {
-        actionOnDamage.Action(dmg, attackCharacter);
+        actionOnDamage.Action(attackInfo);
     }
 
-    protected override void ActionOnDeath()
+    protected override void ActionOnDeath(AttackInformation attackInfo)
     {
-        actionOnDeath?.Invoke();
+        actionOnDeath.Action(attackInfo);
     }
 
-    public override void NoticedDeathFromTarget(Character targetCharacter)
+    public override void BeNoticedDeathOfTarget(Character targetCharacter)
     {
         actionOnKill.Action(targetCharacter);
+    }
+
+    public override void AttackOnHitFrameOfAnimation()
+    {
+        if (SpawnManager.IsDestroying) return;
+
+        var arrow = SpawnManager.Instance.Spawn<Arrow>(PathOfResources.Prefabs.Arrow);
+
+        if (arrow == null) return;
+        arrow.SetAttackInformationAndFire(tf_FireArrowPos.position, basicAtkInfo);
     }
 
     #region Skill Cooldown Function

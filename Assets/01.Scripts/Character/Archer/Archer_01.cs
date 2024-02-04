@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Archer_01 : Archer
 {
     protected override ActiveSkill _ActiveSkill

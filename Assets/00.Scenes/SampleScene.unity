@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &273789012
+--- !u!1001 &357058081
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -131,58 +131,59 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 100000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
-      propertyPath: m_Name
-      value: FantasyArcher_01 (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 37.13
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.018599391
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1301733070326079791, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
+      propertyPath: m_Name
+      value: FantasyArcher_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8896578027134627975, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
+      propertyPath: moveSpeed
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1885233625}
-  m_SourcePrefab: {fileID: 100100000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,27 +276,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1885233624 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
-  m_PrefabInstance: {fileID: 273789012}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1885233625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1885233624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 980c009d38386ed4295aefe830674d81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  power: 1
-  baseAttackSpeed: 1
-  baseMaxHP: 100
---- !u!1001 &1964681313
+--- !u!1001 &4466401562153135310
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -303,82 +284,129 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 100000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
-      propertyPath: m_Name
-      value: FantasyArcher_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.018599391
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
+    - target: {fileID: 709364382510283469, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1301733070326079791, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
+      propertyPath: m_Name
+      value: FantasyArcher_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8896578027134627975, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
+      propertyPath: moveSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8896578027134627975, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
+      propertyPath: baseAttackSpeed
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1964681315}
-  m_SourcePrefab: {fileID: 100100000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
---- !u!1 &1964681314 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: b7a626342e930e34a875da54fbc9077c, type: 3}
-  m_PrefabInstance: {fileID: 1964681313}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1964681315
-MonoBehaviour:
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3cd04f29ca1795644a90ebe4db49f504, type: 3}
+--- !u!1001 &6021973239843726857
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964681314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5057f6ce77bd786478dc701def6c60d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  power: 1
-  baseAttackSpeed: 1
-  baseMaxHP: 100
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 45881999668336479, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 45881999668336479, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.018599391
+      objectReference: {fileID: 0}
+    - target: {fileID: 45881999668336479, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 45881999668336479, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 45881999668336479, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 45881999668336479, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 45881999668336479, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 45881999668336479, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 45881999668336479, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 45881999668336479, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386382607221917398, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: moveSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582937782509633749, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
+      propertyPath: m_Name
+      value: FantasyArcher_02
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6e48463fb1ddea0438af7466deb4f710, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
-  - {fileID: 1964681313}
-  - {fileID: 273789012}
+  - {fileID: 357058081}
+  - {fileID: 4466401562153135310}
+  - {fileID: 6021973239843726857}
