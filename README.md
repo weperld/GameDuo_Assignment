@@ -31,3 +31,6 @@
 - 패시브 스킬: O
 - 무기 및 머지 시스템: X
 - 능력 시스템: X
+
+## 영상 URL
+[Youtube 링크](https://youtu.be/yxy8RFi_NNo)
