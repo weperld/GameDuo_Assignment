@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class PassiveSkill_Dmg_Boost : PassiveSkill
 {
-    public PassiveSkill_Dmg_Boost(Character owner) : base(owner, 10f, Enums.PassiveActiveCondition.HIT_BASIC_ATK, 0f, Enums.SkillEffects.DMG_BOOST, Enums.SkillTargetType.TARGET, new object[] { 100f }) { }
-    public PassiveSkill_Dmg_Boost(Character owner, float dmgMultValue) : base(owner, 10f, Enums.PassiveActiveCondition.HIT_BASIC_ATK, 0f, Enums.SkillEffects.DMG_BOOST, Enums.SkillTargetType.TARGET, new object[] { dmgMultValue }) { }
-    public PassiveSkill_Dmg_Boost(Character owner, float cd, float dmgMultValue) : base(owner, 10f, Enums.PassiveActiveCondition.HIT_BASIC_ATK, cd, Enums.SkillEffects.DMG_BOOST, Enums.SkillTargetType.TARGET, new object[] { dmgMultValue }) { }
+    protected override string _SpritePath => PathOfResources.SpriteAtlas.GDR_Icons_Bright;
+    protected override string _SpriteName => "Bow_Bright";
+
+    public PassiveSkill_Dmg_Boost(Archer owner) : base(owner, 10f, Enums.PassiveActiveCondition.HIT_BASIC_ATK, 0f, Enums.SkillEffects.DMG_BOOST, Enums.SkillTargetType.TARGET, new object[] { 100f }) { }
+    public PassiveSkill_Dmg_Boost(Archer owner, float dmgMultValue) : base(owner, 10f, Enums.PassiveActiveCondition.HIT_BASIC_ATK, 0f, Enums.SkillEffects.DMG_BOOST, Enums.SkillTargetType.TARGET, new object[] { dmgMultValue }) { }
+    public PassiveSkill_Dmg_Boost(Archer owner, float cd, float dmgMultValue) : base(owner, 10f, Enums.PassiveActiveCondition.HIT_BASIC_ATK, cd, Enums.SkillEffects.DMG_BOOST, Enums.SkillTargetType.TARGET, new object[] { dmgMultValue }) { }
 
     protected override void SkillFunction()
     {

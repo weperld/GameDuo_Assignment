@@ -1,7 +1,6 @@
 public interface ISkill
 {
     public void SetTargets(params Character[] characters);
-
-    public void ApplyEffectToTargets();
-    public void ExpireAppliedEffectOfTargets();
+    public void SetCustomCoefficients(params object[] values);
+    public void UseSkill();
 }

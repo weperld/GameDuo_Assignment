@@ -16,6 +16,13 @@ public class UI_Btn_GameMode : MonoBehaviour
             OnChangeGameMode(GameManager.Instance._GameMode, GameManager.Instance._GameMode);
         }
     }
+    private void OnDestroy()
+    {
+        if (!GameManager.IsDestroying)
+        {
+            GameManager.Instance._ActionOnChangeMode.RemoveAction(OnChangeGameMode);
+        }
+    }
 
     private void OnChangeGameMode(GameModes.Mode prevMode, GameModes.Mode currentMode)
     {

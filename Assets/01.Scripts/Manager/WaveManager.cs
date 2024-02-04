@@ -32,17 +32,14 @@ public class WaveManager : Manager<WaveManager>
     #endregion
 
     #region Actions
-    private ActionTemplate<int, int> actionOnClearWave = new ActionTemplate<int, int>();
-    private ActionTemplate<int, int> actionOnChangeWave = new ActionTemplate<int, int>();
-
     /// <summary>
     /// 웨이브 클리어 시 수행 액션(클리어 시점의 스테이지 번호, 클리어 시점의 웨이브 번호)
     /// </summary>
-    public ActionTemplate<int, int> _ActionOnClearWave => actionOnClearWave;
+    public ActionTemplate<int, int> _ActionOnClearWave { get; } = new ActionTemplate<int, int>();
     /// <summary>
     /// 웨이브 변경 혹은 시작 시 수행 액션(시작 시점의 스테이지 번호, 시작 시점의 웨이브 번호)
     /// </summary>
-    public ActionTemplate<int, int> _ActionOnStartWave => actionOnChangeWave;
+    public ActionTemplate<int, int> _ActionOnStartWave { get; } = new ActionTemplate<int, int>();
     #endregion
 
     #region 웨이브 관리

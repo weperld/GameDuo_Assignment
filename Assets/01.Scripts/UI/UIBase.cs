@@ -18,13 +18,4 @@ public class UIBase : MonoBehaviour, IUI
             return rectTf;
         }
     }
-
-    public Canvas rootCanvas
-    {
-        get
-        {
-            var ret = transform.GetComponentInChildren<Canvas>();
-            return ret;
-        }
-    }
 }

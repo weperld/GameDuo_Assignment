@@ -1,5 +1,5 @@
 # GameDuo_Assignment
-### 작업 소요 일정: 2024.01.28 12:00pm ~ 
+### 작업 소요 일정: 2024.01.28 ~ 2024.02.04
 <br/>
 
 ## 작업 환경
@@ -19,3 +19,4 @@
 - [Fantasy Inventory Icons [Free]](https://assetstore.unity.com/packages/2d/gui/icons/fantasy-inventory-icons-free-143805)
 - [Free Asset - 2D Handcrafted Art](https://assetstore.unity.com/packages/2d/environments/free-asset-2d-handcrafted-art-117049)
 - [Fonts - MapleStory](https://maplestory.nexon.com/Media/Font)
+- [Modern RPG - Free icons pack](https://assetstore.unity.com/packages/2d/gui/icons/modern-rpg-free-icons-pack-264706)

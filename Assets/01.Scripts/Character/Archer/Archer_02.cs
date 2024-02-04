@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Archer_02 : Archer
 {
-    protected override ActiveSkill _ActiveSkill
+    public override ActiveSkill _ActiveSkill
     {
         get
         {
@@ -13,7 +13,7 @@ public class Archer_02 : Archer
             return activeSkill;
         }
     }
-    protected override PassiveSkill _PassiveSkill
+    public override PassiveSkill _PassiveSkill
     {
         get
         {

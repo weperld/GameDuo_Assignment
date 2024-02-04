@@ -5,6 +5,23 @@ using Enums;
 
 public abstract class Skill : ISkill
 {
+    protected virtual string _SpritePath { get; }
+    protected virtual string _SpriteName { get; }
+    public Sprite _Sprite
+    {
+        get
+        {
+            var sprites = Resources.LoadAll<Sprite>(_SpritePath);
+            if (sprites == null || sprites.Length == 0) return null;
+
+            foreach (var sprite in sprites)
+                if (sprite.name == _SpriteName)
+                    return sprite;
+            return null;
+        }
+    }
+
+
     private float cooldown = 30f;
     private SkillEffects effect;
     private SkillTargetType targetType;
@@ -15,30 +32,38 @@ public abstract class Skill : ISkill
     protected List<object> customCoefficients = new List<object>();
     protected List<Character> list_Targets = new List<Character>();
 
-    public ActionTemplate<float> actionOnCooldownChanged = new ActionTemplate<float>();
+    /// <summary>
+    /// (current, total cooldown)
+    /// </summary>
+    public ActionTemplate<float, float> _ActionOnCooldownChanged { get; } = new ActionTemplate<float, float>();
 
     #region 프로퍼티
-    public Character _SkillOwner { get; private set; }
+    public Archer _SkillOwner { get; private set; }
 
+    /// <summary>
+    /// 전체 쿨타임
+    /// </summary>
     public float _Cooldown => cooldown;
     public SkillEffects _Effect => effect;
     public SkillTargetType _TargetType => targetType;
     public object[] _SkillValues => skillValues;
 
+    /// <summary>
+    /// 현재 쿨타임
+    /// </summary>
     public float _CurrentCooldown
     {
         get => currentCooldown;
         set
         {
-            float decrementValue = Mathf.Clamp(value, 0f, _Cooldown);
-            currentCooldown = Mathf.Max(currentCooldown - decrementValue, 0f);
-            actionOnCooldownChanged.Action(currentCooldown);
+            currentCooldown = Mathf.Clamp(value, 0f, _Cooldown);
+            _ActionOnCooldownChanged.Action(currentCooldown, _Cooldown);
         }
     }
     #endregion
 
-    public Skill(Character owner) { _SkillOwner = owner; }
-    public Skill(Character owner, float cd, SkillEffects eff, SkillTargetType targetType, object[] values) : this(owner)
+    public Skill(Archer owner) { _SkillOwner = owner; }
+    public Skill(Archer owner, float cd, SkillEffects eff, SkillTargetType targetType, object[] values) : this(owner)
     {
         cooldown = cd;
         effect = eff;
@@ -73,9 +98,17 @@ public abstract class Skill : ISkill
         customCoefficients.AddRange(values);
     }
 
+    public virtual void UseSkill()
+    {
+        if (_CurrentCooldown > 0f) return;
+        _CurrentCooldown = _Cooldown;
+        if (_SkillOwner != null && _SkillOwner.gameObject.activeInHierarchy) _SkillOwner.StartCoroutine(_SkillOwner.CoroutineReductActiveSkillCooldown(this));
+
+        ApplyEffectToTargets();
+    }
     /// <summary>
     /// When use skill, apply skill effect to targets
     /// </summary>
-    public abstract void ApplyEffectToTargets();
-    public abstract void ExpireAppliedEffectOfTargets();
+    protected abstract void ApplyEffectToTargets();
+    protected abstract void ExpireAppliedEffectOfTargets();
 }

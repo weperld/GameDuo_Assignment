@@ -44,7 +44,10 @@ public abstract class Character : MonoBehaviour
         get
         {
             var ret = baseAttackSpeed;
-            if (dict_AppliedBuffEffects.TryGetValue(BuffStat.Stat.ATK_SPD_BOOST, out var v) && !v._IsExpired) ret += v.appliedEffect._BoostValue;
+            if (dict_AppliedBuffEffects.TryGetValue(BuffStat.Stat.ATK_SPD_BOOST, out var v) && v != null)
+            {
+                if (!v._IsExpired) ret += v.appliedEffect._BoostValue;
+            }
             return ret;
         }
     }
@@ -65,18 +68,18 @@ public abstract class Character : MonoBehaviour
         public float appliedDuration;
         public bool _IsExpired => appliedEffect == null || appliedEffect._Duration <= appliedDuration;
 
-        private Action<AppliedBuffEffect> onExpire;
+        private ActionTemplate<AppliedBuffEffect> onExpire = new ActionTemplate<AppliedBuffEffect>();
 
         public AppliedBuffEffect(BuffEffect effect, Action<AppliedBuffEffect> onExpire)
         {
             appliedEffect = effect;
             appliedDuration = 0f;
-            this.onExpire = onExpire;
+            this.onExpire.SetAction(onExpire);
         }
 
         public void ExpireBuff()
         {
-            if (onExpire != null) onExpire(this);
+            onExpire.Action(this);
         }
     }
 
@@ -447,7 +450,7 @@ public abstract class Character : MonoBehaviour
             var appliedEffectInfo = new AppliedBuffEffect(buffEffect, b =>
             {
                 // 버프 시간 만료 시 작동 코드 작성(ex: 비주얼 효과 제거)
-                if (dict_AppliedBuffEffects[key] == b) dict_AppliedBuffEffects[key] = null;
+                if (dict_AppliedBuffEffects[key] == b) dict_AppliedBuffEffects.Remove(key);
             });
             if (dict_AppliedBuffEffects.ContainsKey(key))
             {
@@ -463,18 +466,29 @@ public abstract class Character : MonoBehaviour
     }
     private IEnumerator RemoveExpiredBuffs()
     {
+
         int applyingEffCount;
         do
         {
             yield return null;
 
             applyingEffCount = 0;
+            List<BuffStat.Stat> expireKey = new List<BuffStat.Stat>();
+
+            // 만료된 버프 체크
             foreach (var kvp in dict_AppliedBuffEffects)
             {
+                if (kvp.Value == null) continue;
+
                 kvp.Value.appliedDuration += Time.deltaTime;
                 if (kvp.Value.appliedDuration < kvp.Value.appliedEffect._Duration) applyingEffCount++;
-                else dict_AppliedBuffEffects[kvp.Key].ExpireBuff();
+                else expireKey.Add(kvp.Key);
             }
+
+            // 만료 버프 제거
+            foreach (var key in expireKey)
+                dict_AppliedBuffEffects[key].ExpireBuff();
+
         } while (applyingEffCount > 0);
 
         expiredBuffCoroutine = null;

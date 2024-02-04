@@ -14,16 +14,28 @@ public class GameManager : Manager<GameManager>
 
     private bool archerGenPosIsRegisted = false;
     private Vector3[] archerGenPositions;
+
+    public ActionTemplate<Archer, Archer> _ActionOnSelectArcher { get; } = new ActionTemplate<Archer, Archer>();
+    private Archer selectedAcher = null;
+    public Archer _SelectedArcher
+    {
+        get => selectedAcher;
+        set
+        {
+            var prevSelect = selectedAcher;
+            selectedAcher = value;
+            _ActionOnSelectArcher.Action(prevSelect, selectedAcher);
+        }
+    }
     #endregion
 
     #region Game Mode Variables
     private GameModes gameModeData = new GameModes();
 
-    private ActionTemplate<GameModes.Mode, GameModes.Mode> actionOnChangeMode = new ActionTemplate<GameModes.Mode, GameModes.Mode>();
     /// <summary>
     /// (previous mode, current mode)
     /// </summary>
-    public ActionTemplate<GameModes.Mode, GameModes.Mode> _ActionOnChangeMode => actionOnChangeMode;
+    public ActionTemplate<GameModes.Mode, GameModes.Mode> _ActionOnChangeMode { get; } = new ActionTemplate<GameModes.Mode, GameModes.Mode>();
 
     public GameModes.Mode _GameMode
     {
@@ -37,6 +49,7 @@ public class GameManager : Manager<GameManager>
     }
     #endregion
 
+    #region 아처 캐릭터 관리 함수
     public Character[] GetActivatedArchers() => (new List<Character>(set_ActivatedArchers)).ToArray();
     public void RegistArcherGenPositions(params Vector3[] archerGenPositions)
     {
@@ -79,7 +92,9 @@ public class GameManager : Manager<GameManager>
         set_ActivatedArchers.Remove(archer);
         archer._ActionOnCharacterIsDead.RemoveAction(RemoveArcherOfSet);
     }
+    #endregion
 
+    #region 모드 관리 함수
     public void ChangeGameMode()
     {
         var currentMode = _GameMode;
@@ -95,6 +110,7 @@ public class GameManager : Manager<GameManager>
         if (_GameMode == mode) return;
         _GameMode = mode;
     }
+    #endregion
 
     public void SetRootGeneratePosition(Transform root)
     {

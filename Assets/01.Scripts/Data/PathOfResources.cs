@@ -27,4 +27,10 @@ public static class PathOfResources
 
         public const string ColorSwatches = FolderName + "/ColorSwatchSO";
     }
+
+    public static class SpriteAtlas
+    {
+        public const string GDR_Icons_Bright = "Modern GDR - Free icons pack/00_Atlas/BrightIcons";
+        public const string GDR_Icons_Dark = "Modern GDR - Free icons pack/00_Atlas/DarkIcons";
+    }
 }

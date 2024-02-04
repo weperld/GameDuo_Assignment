@@ -18,6 +18,10 @@ public class UI_WaveStartAlarm : UIBase
     {
         if (!WaveManager.IsDestroying) WaveManager.Instance._ActionOnStartWave.RegistAction(OnStartWave);
     }
+    private void OnDestroy()
+    {
+        if (!WaveManager.IsDestroying) WaveManager.Instance._ActionOnStartWave.RemoveAction(OnStartWave);
+    }
 
     private void Update()
     {

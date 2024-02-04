@@ -2,8 +2,10 @@ using System;
 using UnityEngine;
 using Enums;
 using UnityEditor;
+using UnityEngine.EventSystems;
+using System.Collections;
 
-public class Archer : Character
+public class Archer : Character, IPointerClickHandler
 {
     #region Inspector
     [Header("Archer")]
@@ -31,9 +33,9 @@ public class Archer : Character
 
     #region Skills
     protected ActiveSkill activeSkill = null;
-    protected virtual ActiveSkill _ActiveSkill { get { if (activeSkill == null) activeSkill = new ActiveSkill(this); return activeSkill; } }
+    public virtual ActiveSkill _ActiveSkill { get { if (activeSkill == null) activeSkill = new ActiveSkill(this); return activeSkill; } }
     protected PassiveSkill passiveSkill = null;
-    protected virtual PassiveSkill _PassiveSkill { get { if (passiveSkill == null) passiveSkill = new PassiveSkill(this, 0f, PassiveActiveCondition.NONE); return passiveSkill; } }
+    public virtual PassiveSkill _PassiveSkill { get { if (passiveSkill == null) passiveSkill = new PassiveSkill(this, 0f, PassiveActiveCondition.NONE); return passiveSkill; } }
     #endregion
 
     #region Actions
@@ -60,7 +62,7 @@ public class Archer : Character
                         SkillTargetType.TARGET => new Character[] { atkInfo.target },
                         _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this)
                     };
-                    SetTargetsAndApplyEffectOfPassive(targets);
+                    SetTargetsAndUsePassiveSkill(targets);
                 });
                 break;
             case PassiveActiveCondition.ACTIVATE_SKILL:
@@ -68,7 +70,7 @@ public class Archer : Character
                 {
                     if (_PassiveSkill._TargetType != SkillTargetType.TARGET)
                         targets = Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this);
-                    SetTargetsAndApplyEffectOfPassive(targets);
+                    SetTargetsAndUsePassiveSkill(targets);
                 });
                 break;
             case PassiveActiveCondition.HIT_ALL:
@@ -80,7 +82,7 @@ public class Archer : Character
                         _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this),
                     };
                     _PassiveSkill.SetCustomCoefficients(atkInfo);
-                    SetTargetsAndApplyEffectOfPassive(targets);
+                    SetTargetsAndUsePassiveSkill(targets);
                 });
                 break;
             case PassiveActiveCondition.HIT_BASIC_ATK:
@@ -92,7 +94,7 @@ public class Archer : Character
                         _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this),
                     };
                     _PassiveSkill.SetCustomCoefficients(atkInfo);
-                    SetTargetsAndApplyEffectOfPassive(targets);
+                    SetTargetsAndUsePassiveSkill(targets);
                 });
                 break;
             case PassiveActiveCondition.HIT_SKILL:
@@ -104,11 +106,11 @@ public class Archer : Character
                         _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this),
                     };
                     _PassiveSkill.SetCustomCoefficients(atkInfo);
-                    SetTargetsAndApplyEffectOfPassive(targets);
+                    SetTargetsAndUsePassiveSkill(targets);
                 });
                 break;
             case PassiveActiveCondition.DEATH:
-                actionOnDeath.SetAction(atkInfo => SetTargetsAndApplyEffectOfPassive(Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this)));
+                actionOnDeath.SetAction(atkInfo => SetTargetsAndUsePassiveSkill(Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this)));
                 break;
             case PassiveActiveCondition.KILL:
                 actionOnKill.SetAction(target =>
@@ -118,7 +120,7 @@ public class Archer : Character
                         SkillTargetType.TARGET => new Character[] { target },
                         _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this),
                     };
-                    SetTargetsAndApplyEffectOfPassive(targets);
+                    SetTargetsAndUsePassiveSkill(targets);
                 });
                 break;
             case PassiveActiveCondition.DAMAGE:
@@ -130,7 +132,7 @@ public class Archer : Character
                         _ => Character.GetTargetsByTargetType(_PassiveSkill._TargetType, this),
                     };
                     _PassiveSkill.SetCustomCoefficients(atkInfo);
-                    SetTargetsAndApplyEffectOfPassive(targets);
+                    SetTargetsAndUsePassiveSkill(targets);
                 });
                 break;
             case PassiveActiveCondition.CLEAR_WAVE:
@@ -138,20 +140,21 @@ public class Archer : Character
                 break;
         }
     }
-    private void SetTargetsAndApplyEffectOfPassive(params Character[] targets)
+    private void SetTargetsAndUsePassiveSkill(params Character[] targets)
     {
         _PassiveSkill.SetTargets(targets);
-        _PassiveSkill.ApplyEffectToTargets();
+        _PassiveSkill.UseSkill();
     }
 
     public void UseActiveSkill()
     {
         var skillTargets = Character.GetTargetsByTargetType(_ActiveSkill._TargetType, this);
         _ActiveSkill.SetTargets(skillTargets);
-        _ActiveSkill.ApplyEffectToTargets();
+        _ActiveSkill.UseSkill();
         actionOnSkill.Action(skillTargets);
     }
 
+    #region 전투 액션
     protected override void ActionOnBasicAttack(AttackInformation attackInfo)
     {
         basicAtkInfo = attackInfo;
@@ -192,8 +195,9 @@ public class Archer : Character
         if (arrow == null) return;
         arrow.SetAttackInformationAndFire(tf_FireArrowPos.position, basicAtkInfo);
     }
+    #endregion
 
-    #region Skill Cooldown Function
+    #region Skill Cooldown
     /// <summary>
     /// 액티브 스킬의 쿨타임 감소<para/>
     /// 쿨타임 감소를 전체 쿨타임의 비율로 진행할 것인지, 고정값으로 진행할 것인지 결정 필요
@@ -202,13 +206,20 @@ public class Archer : Character
     /// <param name="reductionValue">고정값일 경우에 값이 0보다 작으면 0으로 계산, 비율값으로 사용될 경우 0과 1 사이의 값만 사용</param>
     public void ReductActiveSkillCooldown(bool constValue, float reductionValue)
     {
-        float cd = _ActiveSkill._Cooldown;
-        if (!constValue) reductionValue = Mathf.Clamp01(reductionValue) * cd;
+        if (!constValue) reductionValue = Mathf.Clamp01(reductionValue) * _ActiveSkill._Cooldown;
         _ActiveSkill._CurrentCooldown -= reductionValue;
     }
 
-    public void RegistCooldownAction(Action<float> action) => _ActiveSkill.actionOnCooldownChanged.RegistAction(action);
-    public void RemoveCooldownAction(Action<float> action) => _ActiveSkill.actionOnCooldownChanged.RemoveAction(action);
+    public IEnumerator CoroutineReductActiveSkillCooldown(Skill skill)
+    {
+        if (skill == null) yield break;
+
+        while (skill._CurrentCooldown > 0f)
+        {
+            yield return null;
+            skill._CurrentCooldown -= Time.deltaTime;
+        }
+    }
     #endregion
 
     #region 스킬의 발동 조건이 웨이브 클리어일 때 발동될 함수
@@ -219,7 +230,16 @@ public class Archer : Character
     /// <param name="waveNum">클리어 시점의 웨이브 번호</param>
     private void ActionOnClearWave(int stageNum, int waveNum)
     {
-        _PassiveSkill.ApplyEffectToTargets();
+        _PassiveSkill.UseSkill();
+    }
+    #endregion
+
+    #region 터치 이벤트
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log($"Touch On {name}");
+        if (GameManager.IsDestroying) return;
+        GameManager.Instance._SelectedArcher = this;
     }
     #endregion
 }

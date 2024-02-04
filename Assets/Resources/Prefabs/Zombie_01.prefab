@@ -121,7 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tf_DmgPositions: []
   power: 5
-  baseAttackSpeed: 2
+  baseAttackSpeed: 0.7
   baseMaxHP: 50
   moveSpeed: 5
   attackRange: 1.5
