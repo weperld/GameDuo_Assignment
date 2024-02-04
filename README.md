@@ -33,4 +33,4 @@
 - 능력 시스템: X
 
 ## 영상 URL
-[Youtube 링크](https://youtu.be/yxy8RFi_NNo)
+[Youtube 링크](https://youtu.be/yxy8RFi_NNo), 영상길이: 50초, 배속이 적용되어 있습니다.
