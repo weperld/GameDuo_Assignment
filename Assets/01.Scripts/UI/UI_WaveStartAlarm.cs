@@ -17,6 +17,7 @@ public class UI_WaveStartAlarm : UIBase
     private void Awake()
     {
         if (!WaveManager.IsDestroying) WaveManager.Instance._ActionOnStartWave.RegistAction(OnStartWave);
+        gameObject.SetActive(false);
     }
     private void OnDestroy()
     {
